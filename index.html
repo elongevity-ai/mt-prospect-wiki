@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mt. Prospect Resource Wiki</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --green:       #1F4433;
+      --green-mid:   #2a5a44;
+      --green-light: #e4f0e8;
+      --cream:       #F3F9F1;
+      --charcoal:    #202F39;
+      --muted:       #6B7E75;
+      --border:      #D0E4D4;
+      --white:       #ffffff;
+      --wa-bg:       #e6f9ee;
+      --wa-fg:       #1a7a45;
+      --form-bg:     #e8f0fe;
+      --form-fg:     #1a56d6;
+      --heart:       #d95c3a;
+      --heart-bg:    #fff2ee;
+      --shadow:      0 1px 6px rgba(31,68,51,0.08);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--cream);
+      color: var(--charcoal);
+      min-height: 100vh;
+    }
+
+    /* ── HEADER ─────────────────────────────────────────── */
+    header {
+      background: var(--green);
+      color: var(--cream);
+      padding: 2.5rem 1.5rem 2rem;
+      text-align: center;
+    }
+
+    .header-eyebrow {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      opacity: 0.6;
+      margin-bottom: 0.5rem;
+    }
+
+    header h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2.4rem;
+      line-height: 1.15;
+      margin-bottom: 0.5rem;
+    }
+
+    header p {
+      font-size: 0.88rem;
+      opacity: 0.7;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    .header-actions {
+      margin-top: 1.25rem;
+      display: flex;
+      gap: 0.75rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.5rem 1.1rem;
+      border: 1.5px solid rgba(243,249,241,0.5);
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--cream);
+      text-decoration: none;
+      transition: background 0.15s, border-color 0.15s;
+      cursor: pointer;
+      background: transparent;
+    }
+
+    .btn-outline:hover {
+      background: rgba(243,249,241,0.12);
+      border-color: var(--cream);
+    }
+
+    /* ── CONTROLS ───────────────────────────────────────── */
+    .controls-wrap {
+      max-width: 1200px;
+      margin: 1.5rem auto 0.75rem;
+      padding: 0 1.25rem;
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .search-box {
+      flex: 1;
+      min-width: 220px;
+      padding: 0.6rem 1rem 0.6rem 2.4rem;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.875rem;
+      background: var(--white);
+      color: var(--charcoal);
+      transition: border-color 0.15s;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236B7E75' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: 0.75rem center;
+    }
+
+    .search-box:focus { outline: none; border-color: var(--green); }
+
+    /* ── FILTERS ────────────────────────────────────────── */
+    .filters-wrap {
+      max-width: 1200px;
+      margin: 0 auto 0.75rem;
+      padding: 0 1.25rem;
+      display: flex;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+    }
+
+    .pill {
+      padding: 0.3rem 0.85rem;
+      border: 1.5px solid var(--border);
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 500;
+      cursor: pointer;
+      background: var(--white);
+      color: var(--muted);
+      transition: all 0.15s;
+      line-height: 1.4;
+    }
+
+    .pill:hover { border-color: var(--green); color: var(--green); }
+    .pill.active { background: var(--green); color: var(--cream); border-color: var(--green); }
+
+    /* ── STATS ──────────────────────────────────────────── */
+    .stats-bar {
+      max-width: 1200px;
+      margin: 0 auto 0.5rem;
+      padding: 0 1.25rem;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    /* ── TABLE ──────────────────────────────────────────── */
+    .table-wrap {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.25rem 3rem;
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--white);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    thead th {
+      background: var(--green);
+      color: var(--cream);
+      padding: 0.7rem 0.9rem;
+      text-align: left;
+      font-size: 0.73rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      cursor: pointer;
+      user-select: none;
+      white-space: nowrap;
+    }
+
+    thead th:hover { background: var(--green-mid); }
+    thead th.sorted-asc::after  { content: ' ↑'; opacity: 0.8; }
+    thead th.sorted-desc::after { content: ' ↓'; opacity: 0.8; }
+
+    tbody tr { border-bottom: 1px solid var(--border); transition: background 0.1s; }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: var(--green-light); }
+
+    td {
+      padding: 0.7rem 0.9rem;
+      font-size: 0.84rem;
+      vertical-align: top;
+      line-height: 1.45;
+    }
+
+    .vendor-name { font-weight: 600; color: var(--charcoal); }
+    .vendor-service { font-size: 0.78rem; color: var(--muted); margin-top: 1px; }
+
+    .notes-text {
+      font-size: 0.78rem;
+      color: var(--muted);
+      font-style: italic;
+      max-width: 180px;
+    }
+
+    .empty { color: #ccc; }
+
+    /* ── BADGES ─────────────────────────────────────────── */
+    .badge {
+      display: inline-block;
+      padding: 0.15rem 0.55rem;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      line-height: 1.5;
+    }
+
+    .badge-wa   { background: var(--wa-bg);   color: var(--wa-fg); }
+    .badge-form { background: var(--form-bg); color: var(--form-fg); }
+    .badge-cat  { background: var(--green-light); color: var(--green); }
+
+    /* ── PHONE / WEB ─────────────────────────────────────── */
+    .phone-link { color: var(--green); text-decoration: none; font-weight: 500; white-space: nowrap; }
+    .phone-link:hover { text-decoration: underline; }
+    .web-link { color: var(--green); text-decoration: none; font-size: 0.8rem; word-break: break-all; }
+    .web-link:hover { text-decoration: underline; }
+
+    /* ── UPVOTE BUTTON ───────────────────────────────────── */
+    .heart-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.28rem 0.6rem;
+      border: 1.5px solid var(--border);
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      color: var(--muted);
+      background: var(--white);
+      transition: all 0.18s;
+      white-space: nowrap;
+    }
+
+    .heart-btn:hover {
+      border-color: var(--heart);
+      color: var(--heart);
+      background: var(--heart-bg);
+    }
+
+    /* ── REFERRED BY ─────────────────────────────────────── */
+    .ref-list { font-size: 0.78rem; color: var(--muted); }
+
+    /* ── STATE MESSAGES ──────────────────────────────────── */
+    .state-msg {
+      text-align: center;
+      padding: 4rem 2rem;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .state-msg .icon { font-size: 2.5rem; display: block; margin-bottom: 0.75rem; }
+
+    /* ── FOOTER ─────────────────────────────────────────── */
+    footer {
+      background: var(--green);
+      color: rgba(243,249,241,0.6);
+      text-align: center;
+      padding: 1.25rem;
+      font-size: 0.75rem;
+    }
+
+    footer strong { color: var(--cream); }
+
+    /* ── MOBILE CARDS ────────────────────────────────────── */
+    @media (max-width: 768px) {
+      header h1 { font-size: 1.8rem; }
+
+      table, thead, tbody, tr, td, th { display: block; }
+      thead { display: none; }
+
+      .table-wrap { padding: 0 0.75rem 3rem; }
+
+      tbody tr {
+        background: var(--white);
+        border-radius: 10px;
+        margin-bottom: 0.75rem;
+        border: 1px solid var(--border);
+        border-left: 4px solid var(--green);
+        padding: 1rem;
+        box-shadow: var(--shadow);
+      }
+
+      tbody tr:hover { background: var(--white); }
+
+      td {
+        padding: 0.2rem 0;
+        border: none;
+      }
+
+      td[data-label]:not([data-label=""])::before {
+        content: attr(data-label);
+        display: block;
+        font-size: 0.68rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--muted);
+        margin-top: 0.5rem;
+        margin-bottom: 0.1rem;
+      }
+
+      td[data-label="Vendor"]::before { margin-top: 0; }
+
+      td.hide-if-empty:empty,
+      td.hide-if-empty:has(.empty) { display: none; }
+
+      .notes-text { max-width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-eyebrow">Mt. Prospect Neighborhood · Gaithersburg, MD</div>
+  <h1>🌿 Community Resource Wiki</h1>
+  <p>Vendor recommendations collected from your neighbors — tried, tested, and trusted.</p>
+  <div class="header-actions">
+    <a class="btn-outline" href="https://forms.gle/YWgJ3PJDwjoTXC6s6" target="_blank">
+      ＋ Add a vendor
+    </a>
+    <button class="btn-outline" onclick="loadData()">
+      ↻ Refresh
+    </button>
+  </div>
+</header>
+
+<div class="controls-wrap">
+  <input
+    type="text"
+    class="search-box"
+    id="searchBox"
+    placeholder="Search by service, vendor, or neighbor name…"
+    oninput="filterAndRender()"
+    autocomplete="off"
+  >
+</div>
+
+<div class="filters-wrap" id="filterPills">
+  <button class="pill active" onclick="setCategory('all', this)">All</button>
+</div>
+
+<div class="stats-bar" id="statsBar"></div>
+
+<div class="table-wrap">
+  <div id="tableContainer">
+    <div class="state-msg">
+      <span class="icon">🌿</span>
+      Loading community vendors…
+    </div>
+  </div>
+</div>
+
+<footer>
+  <strong>Mt. Prospect Resource Wiki</strong> · Updated live from the community · 
+  <a style="color:rgba(243,249,241,0.7);text-decoration:none;" href="https://forms.gle/YWgJ3PJDwjoTXC6s6" target="_blank">Submit a vendor →</a>
+</footer>
+
+<script>
+  // ── CONFIG ──────────────────────────────────────────────
+  const API_KEY    = 'AIzaSyCMwvSw9AHmeYpe2M52ElSbibDKBQIJHJY';
+  const SHEET_ID   = '1FrIVXTaNnPn-zcyVLzjzjH3XIMddybj1MkIpgm-D_U0';
+  const SHEET_TAB  = 'vendors';
+  const FORM_BASE  = 'https://docs.google.com/forms/d/e/1FAIpQLScsYNag4X7oA9Rn7YWKIzQ0S5byhyBGtLLxqrmt1H7KTzwDfA/viewform?usp=pp_url&entry.230368032=';
+
+  // Column index map (0-based, matching your vendors sheet)
+  const C = { id:0, item:1, category:2, name:3, phone:4, website:5, date_added:6, referred_by:7, notes:8, source:9, upvote_count:10, last_updated:11 };
+
+  let allVendors   = [];
+  let activeCategory = 'all';
+  let sortKey      = null;
+  let sortAsc      = true;
+
+  // ── HELPERS ─────────────────────────────────────────────
+  function cell(row, key) {
+    return ((row[C[key]] || '')).toString().trim();
+  }
+
+  function makePhone(val) {
+    if (!val) return '<span class="empty">—</span>';
+    const digits = val.replace(/\D/g,'');
+    return `<a class="phone-link" href="tel:${digits}">${val}</a>`;
+  }
+
+  function makeLink(val) {
+    if (!val) return '<span class="empty">—</span>';
+    const href = /^https?:\/\//i.test(val) ? val : 'https://' + val;
+    const label = val.replace(/^https?:\/\//i,'').replace(/\/$/,'');
+    return `<a class="web-link" href="${href}" target="_blank" rel="noopener">${label}</a>`;
+  }
+
+  function makeSource(val) {
+    if (!val) return '';
+    const v = val.toLowerCase();
+    if (v.includes('whatsapp')) return '<span class="badge badge-wa">💬 WhatsApp</span>';
+    if (v.includes('form'))     return '<span class="badge badge-form">📋 Form</span>';
+    return `<span class="badge badge-cat">${val}</span>`;
+  }
+
+  function makeHeart(row) {
+    const name  = cell(row,'name') || cell(row,'item');
+    const count = parseInt(cell(row,'upvote_count')) || 0;
+    const url   = FORM_BASE + encodeURIComponent(name);
+    const label = count > 0 ? `❤️ ${count}` : '🤍 Love it?';
+    return `<a class="heart-btn" href="${url}" target="_blank" rel="noopener" title="Leave feedback">${label}</a>`;
+  }
+
+  // ── DATA LOADING ─────────────────────────────────────────
+  async function loadData() {
+    document.getElementById('tableContainer').innerHTML =
+      '<div class="state-msg"><span class="icon">🌿</span>Loading community vendors…</div>';
+    document.getElementById('statsBar').textContent = '';
+
+    try {
+      const range = encodeURIComponent(`${SHEET_TAB}!A:L`);
+      const url   = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${range}?key=${API_KEY}`;
+      const res   = await fetch(url);
+
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.error?.message || `HTTP ${res.status}`);
+      }
+
+      const data = await res.json();
+      const rows = (data.values || []).slice(1).filter(r => r.length > 1 && (r[C.name] || r[C.item]));
+
+      if (rows.length === 0) {
+        document.getElementById('tableContainer').innerHTML =
+          '<div class="state-msg"><span class="icon">📋</span>No vendors yet — be the first to <a href="https://forms.gle/YWgJ3PJDwjoTXC6s6" target="_blank">add one</a>!</div>';
+        return;
+      }
+
+      allVendors = rows;
+      buildPills(rows);
+      filterAndRender();
+
+    } catch (err) {
+      document.getElementById('tableContainer').innerHTML =
+        `<div class="state-msg">
+          <span class="icon">⚠️</span>
+          Couldn't load data.<br>
+          <small style="display:block;margin-top:0.5rem;color:#aaa;">Make sure the Google Sheet is shared as "Anyone with the link can view."<br>${err.message}</small>
+        </div>`;
+    }
+  }
+
+  // ── PILLS ────────────────────────────────────────────────
+  function buildPills(rows) {
+    const cats = [...new Set(rows.map(r => cell(r,'category')).filter(Boolean))].sort();
+    const wrap = document.getElementById('filterPills');
+    // Keep the "All" pill, rebuild the rest
+    const allPill = wrap.querySelector('.pill');
+    wrap.innerHTML = '';
+    wrap.appendChild(allPill);
+    cats.forEach(cat => {
+      const btn = document.createElement('button');
+      btn.className = 'pill';
+      btn.textContent = cat;
+      btn.onclick = () => setCategory(cat, btn);
+      wrap.appendChild(btn);
+    });
+  }
+
+  function setCategory(cat, el) {
+    activeCategory = cat;
+    document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+    el.classList.add('active');
+    filterAndRender();
+  }
+
+  // ── FILTER + SORT + RENDER ───────────────────────────────
+  function filterAndRender() {
+    const q = (document.getElementById('searchBox').value || '').toLowerCase();
+
+    let rows = allVendors.filter(r => {
+      const matchCat = activeCategory === 'all' || cell(r,'category') === activeCategory;
+      const matchQ   = !q || ['item','category','name','phone','referred_by','notes','source']
+        .some(k => cell(r,k).toLowerCase().includes(q));
+      return matchCat && matchQ;
+    });
+
+    if (sortKey) {
+      rows = [...rows].sort((a, b) => {
+        let va = cell(a, sortKey);
+        let vb = cell(b, sortKey);
+        if (sortKey === 'upvote_count') {
+          return sortAsc ? (parseInt(va)||0) - (parseInt(vb)||0) : (parseInt(vb)||0) - (parseInt(va)||0);
+        }
+        va = va.toLowerCase(); vb = vb.toLowerCase();
+        return sortAsc ? va.localeCompare(vb) : vb.localeCompare(va);
+      });
+    }
+
+    renderTable(rows);
+  }
+
+  function sortBy(key) {
+    if (sortKey === key) sortAsc = !sortAsc;
+    else { sortKey = key; sortAsc = true; }
+
+    document.querySelectorAll('thead th').forEach(th => {
+      th.classList.remove('sorted-asc','sorted-desc');
+      if (th.dataset.sort === key) th.classList.add(sortAsc ? 'sorted-asc' : 'sorted-desc');
+    });
+
+    filterAndRender();
+  }
+
+  // ── RENDER ───────────────────────────────────────────────
+  function renderTable(rows) {
+    const total = allVendors.length;
+    document.getElementById('statsBar').textContent =
+      rows.length === total
+        ? `${total} vendor${total !== 1 ? 's' : ''} in the wiki`
+        : `Showing ${rows.length} of ${total} vendors`;
+
+    if (rows.length === 0) {
+      document.getElementById('tableContainer').innerHTML =
+        '<div class="state-msg"><span class="icon">🔍</span>No vendors match your search.</div>';
+      return;
+    }
+
+    const tbody = rows.map(r => {
+      const name    = cell(r,'name');
+      const service = cell(r,'item');
+      const nameCell = name
+        ? `<span class="vendor-name">${esc(name)}</span>${service ? `<div class="vendor-service">${esc(service)}</div>` : ''}`
+        : `<span class="vendor-name">${esc(service)}</span>`;
+
+      return `<tr>
+        <td data-label="Vendor">${nameCell}</td>
+        <td data-label="Category"><span class="badge badge-cat">${esc(cell(r,'category')) || '—'}</span></td>
+        <td data-label="Phone">${makePhone(cell(r,'phone'))}</td>
+        <td data-label="Website">${makeLink(cell(r,'website'))}</td>
+        <td data-label="Referred By" class="hide-if-empty"><span class="ref-list">${esc(cell(r,'referred_by')) || '<span class="empty">—</span>'}</span></td>
+        <td data-label="Notes" class="hide-if-empty"><span class="notes-text">${esc(cell(r,'notes'))}</span></td>
+        <td data-label="Source">${makeSource(cell(r,'source'))}</td>
+        <td data-label="Date Added" class="hide-if-empty"><span style="font-size:0.78rem;color:var(--muted)">${esc(cell(r,'date_added')) || '<span class="empty">—</span>'}</span></td>
+        <td data-label="Loves">${makeHeart(r)}</td>
+      </tr>`;
+    }).join('');
+
+    document.getElementById('tableContainer').innerHTML = `
+      <table>
+        <thead>
+          <tr>
+            <th data-sort="name"    onclick="sortBy('name')">Vendor</th>
+            <th data-sort="category" onclick="sortBy('category')">Category</th>
+            <th>Phone</th>
+            <th>Website</th>
+            <th data-sort="referred_by" onclick="sortBy('referred_by')">Referred By</th>
+            <th>Notes</th>
+            <th data-sort="source" onclick="sortBy('source')">Source</th>
+            <th data-sort="date_added" onclick="sortBy('date_added')">Date</th>
+            <th data-sort="upvote_count" onclick="sortBy('upvote_count')">Loves</th>
+          </tr>
+        </thead>
+        <tbody>${tbody}</tbody>
+      </table>`;
+  }
+
+  function esc(str) {
+    if (!str) return '';
+    return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  // ── INIT ─────────────────────────────────────────────────
+  loadData();
+</script>
+</body>
+</html>
